@@ -66,18 +66,18 @@
  * Then you can verify voltage on debug output value 6 (to get calibrated voltage multiplied by 100).
 */
 #define BAT_FILT_COEF           655       // battery voltage filter coefficient in fixed-point. coef_fixedPoint = coef_floatingPoint * 2^16. In this case 655 = 0.01 * 2^16
-#define BAT_CALIB_REAL_VOLTAGE  5500      // input voltage measured by multimeter (multiplied by 100). In this case 43.00 V * 100 = 4300
-#define BAT_CALIB_ADC           1492      // adc-value measured by mainboard (value nr 5 on UART debug output)1492
+#define BAT_CALIB_REAL_VOLTAGE  5360      // input voltage measured by multimeter (multiplied by 100). In this case 43.00 V * 100 = 4300
+#define BAT_CALIB_ADC           2020      // adc-value measured by mainboard (value nr 5 on UART debug output)1492
 #define BAT_CELLS               16        // battery number of cells. Normal Hoverboard battery: 10s
 #define BAT_LVL2_ENABLE         0         // to beep or not to beep, 1 or 0
 #define BAT_LVL1_ENABLE         1         // to beep or not to beep, 1 or 0
 #define BAT_BLINK_INTERVAL      800        // battery led blink interval (80 loops * 5ms ~= 400ms)
 #define BAT_LVL5                (365 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Green blink:  no beep
-#define BAT_LVL4                (315 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow:       no beep
-#define BAT_LVL3                (315 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow blink: no beep 
-#define BAT_LVL2                (310 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red:          gently beep at this voltage level. [V*100/cell]. In this case 3.60 V/cell
-#define BAT_LVL1                (300 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
-#define BAT_DEAD                (280 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // All leds off: undervoltage poweroff. (while not driving) [V*100/cell]. In this case 3.37 V/cell
+#define BAT_LVL4                (320 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow:       no beep
+#define BAT_LVL3                (320 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow blink: no beep 
+#define BAT_LVL2                (315 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red:          gently beep at this voltage level. [V*100/cell]. In this case 3.60 V/cell
+#define BAT_LVL1                (290 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
+#define BAT_DEAD                (250 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // All leds off: undervoltage poweroff. (while not driving) [V*100/cell]. In this case 3.37 V/cell
 // ######################## END OF BATTERY ###############################
 
 
@@ -144,8 +144,8 @@
 #define DIAG_ENA        1               // [-] Motor Diagnostics enable flag: 0 = Disabled, 1 = Enabled (default)
 
 // Limitation settings
-#define I_MOT_MAX       15           // [A] Maximum single motor current limit Ток
-#define I_DC_MAX        20              // [A] Maximum stage2 DC Link current limit for Commutation and Sinusoidal types (This is the final current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A)
+#define I_MOT_MAX       18           // [A] Maximum single motor current limit Ток
+#define I_DC_MAX        28              // [A] Maximum stage2 DC Link current limit for Commutation and Sinusoidal types (This is the final current protection. Above this value, current chopping is applied. To avoid this make sure that I_DC_MAX = I_MOT_MAX + 2A)
 #define N_MOT_MAX       2000            // [rpm] Maximum motor speed limit
 
 // Field Weakening / Phase Advance
@@ -444,8 +444,8 @@
   #undef  CTRL_MOD_REQ
   #define CTRL_MOD_REQ        TRQ_MODE  // HOVERCAR works best in TORQUE Mode
   #define CONTROL_ADC                   // use ADC as input. disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
-  #define ADC_PROTECT_TIMEOUT 100       // ADC Protection: number of wrong / missing input commands before safety state is taken
-  #define ADC_PROTECT_THRESH  300       // ADC Protection threshold below/above the MIN/MAX ADC values
+  #define ADC_PROTECT_TIMEOUT 50       // ADC Protection: number of wrong / missing input commands before safety state is taken
+  #define ADC_PROTECT_THRESH  150       // ADC Protection threshold below/above the MIN/MAX ADC values
   
   #define INPUT1_TYPE         3        // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect Тормоз
   #define INPUT1_MIN          500     // min ADC1-value while poti at minimum-position (0 - 4095)
@@ -462,7 +462,7 @@
   #define SPEED_COEFFICIENT   16384     // 1.0f
   #define STEER_COEFFICIENT   0         // 0.0f
   //#define INVERT_R_DIRECTION            // Invert rotation of right motor Инверсия
- // #define INVERT_L_DIRECTION            // Invert rotation of left motor
+  //#define INVERT_L_DIRECTION            // Invert rotation of left motor
   //#define SIDEBOARD_SERIAL_USART3       // Tx -> Rx of right sensor board: for LED battery indication. Comment-out if sideboard is not used!
   //#define FEEDBACK_SERIAL_USART3        // Rx <- Tx of right sensor board: to use photosensors as buttons. Comment-out if sideboard is not used!
    #define DEBUG_SERIAL_USART3           // right sensor board cable, disable if I2C (nunchuk or lcd) is used!
