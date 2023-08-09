@@ -459,7 +459,7 @@
   #define INPUT2_MAX          4000      // max ADC2-value while poti at maximum-position (0 - 4095)
   #define INPUT2_DEADBAND     0         // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
   
-  #define SPEED_COEFFICIENT   16384     // 1.0f
+  #define SPEED_COEFFICIENT   20000     // 1.0f ускорение
   #define STEER_COEFFICIENT   0         // 0.0f
   //#define INVERT_R_DIRECTION            // Invert rotation of right motor Инверсия
  // #define INVERT_L_DIRECTION            // Invert rotation of left motor
